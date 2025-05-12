@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
+import { Vehicle } from "@/types";
 
 // Validation schema
 const vehicleFormSchema = z.object({
@@ -23,21 +24,33 @@ type VehicleFormValues = z.infer<typeof vehicleFormSchema>;
 
 interface VehicleFormProps {
   onCancel: () => void;
+  editVehicle?: Vehicle | null;
 }
 
-export function VehicleForm({ onCancel }: VehicleFormProps) {
+export function VehicleForm({ onCancel, editVehicle }: VehicleFormProps) {
   const form = useForm<VehicleFormValues>({
     resolver: zodResolver(vehicleFormSchema),
-    defaultValues: {
-      brand: "",
-      model: "",
-      year: "",
-      plate: "",
-      mileage: "",
-      category: "",
-      purchaseValue: "",
-      purchaseDate: ""
-    }
+    defaultValues: editVehicle 
+      ? {
+          brand: editVehicle.brand,
+          model: editVehicle.model,
+          year: editVehicle.purchaseDate.substring(0, 4),
+          plate: editVehicle.plate,
+          mileage: editVehicle.mileage.toString(),
+          category: editVehicle.category,
+          purchaseValue: editVehicle.purchaseValue.toString(),
+          purchaseDate: editVehicle.purchaseDate
+        }
+      : {
+          brand: "",
+          model: "",
+          year: "",
+          plate: "",
+          mileage: "",
+          category: "",
+          purchaseValue: "",
+          purchaseDate: ""
+        }
   });
   
   function onSubmit(data: VehicleFormValues) {
@@ -48,7 +61,9 @@ export function VehicleForm({ onCancel }: VehicleFormProps) {
 
   return (
     <div>
-      <h3 className="text-lg font-medium text-gray-800 mb-4">Adicionar Novo Veículo</h3>
+      <h3 className="text-lg font-medium text-gray-800 mb-4">
+        {editVehicle ? `Editar Veículo: ${editVehicle.model}` : "Adicionar Novo Veículo"}
+      </h3>
       
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -209,7 +224,9 @@ export function VehicleForm({ onCancel }: VehicleFormProps) {
             <Button type="button" variant="outline" onClick={onCancel}>
               Cancelar
             </Button>
-            <Button type="submit">Salvar Veículo</Button>
+            <Button type="submit">
+              {editVehicle ? "Atualizar Veículo" : "Salvar Veículo"}
+            </Button>
           </div>
         </form>
       </Form>

@@ -33,7 +33,7 @@ export function VehiclesPage() {
   const filteredVehicles = vehicles.filter(vehicle => {
     const matchCategory = filterCategory === "all" || vehicle.category.toLowerCase() === filterCategory.toLowerCase();
     const matchPlate = !filterPlate || vehicle.plate.toLowerCase().includes(filterPlate.toLowerCase());
-    const matchStatus = filterStatus === "all" || vehicle.status.toLowerCase() === filterStatus.toLowerCase();
+    const matchStatus = filterStatus === "all" || vehicle.status === filterStatus;
     return matchCategory && matchPlate && matchStatus;
   });
   
@@ -41,7 +41,7 @@ export function VehiclesPage() {
   const rentedCount = vehicles.filter(v => v.status === 'rented').length;
   const maintenanceCount = vehicles.filter(v => v.status === 'maintenance').length;
 
-  const getStatusBadge = (status: Vehicle['status']) => {
+  const getStatusBadge = (status: string) => {
     switch (status) {
       case 'available':
         return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Disponível</Badge>;
@@ -211,7 +211,8 @@ export function VehiclesPage() {
                           size="sm" 
                           className="text-primary hover:text-primary-600 mr-2"
                           onClick={() => {
-                            setSelectedVehicle(vehicle);
+                            // Sabemos que vehicle.status é um tipo válido pois vem do data.ts que está tipado
+                            setSelectedVehicle(vehicle as Vehicle);
                             setCurrentTab('edit');
                           }}
                         >
