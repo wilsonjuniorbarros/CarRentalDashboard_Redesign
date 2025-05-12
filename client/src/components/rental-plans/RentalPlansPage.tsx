@@ -78,7 +78,7 @@ export function RentalPlansPage() {
               <div key={plan.id} className="border border-gray-200 rounded-lg overflow-hidden shadow">
                 <div className={
                   plan.type === 'daily' 
-                    ? 'bg-primary-600 text-white p-4' 
+                    ? 'bg-blue-600 text-white p-4' 
                     : plan.type === 'monthly' 
                       ? 'bg-green-600 text-white p-4' 
                       : 'bg-amber-500 text-white p-4'
