@@ -56,3 +56,21 @@
     @apply font-sans antialiased bg-background text-foreground;
   }
 }
+
+/* Custom styles for sidebar */
+.bg-blue-800 {
+  background-color: #1e40af;
+}
+
+.bg-blue-700 {
+  background-color: #1d4ed8;
+}
+
+.hover\:bg-blue-700:hover {
+  background-color: #1d4ed8;
+}
+
+/* Ensure text is white in sidebar */
+.text-white {
+  color: white !important;
+}

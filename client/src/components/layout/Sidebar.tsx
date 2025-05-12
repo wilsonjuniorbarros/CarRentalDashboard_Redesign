@@ -55,20 +55,20 @@ export function Sidebar({ isMobileOpen, setIsMobileOpen }: {
       {isMobileOpen && <Backdrop />}
       <div
         className={cn(
-          "fixed inset-y-0 left-0 z-50 w-64 bg-primary-800 text-white shadow-lg transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:z-0",
+          "fixed inset-y-0 left-0 z-50 w-64 bg-blue-800 text-white shadow-lg transition-transform duration-300 ease-in-out lg:translate-x-0 lg:static lg:z-0",
           isMobileOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <div className="flex items-center justify-between p-4 border-b border-primary-700">
+        <div className="flex items-center justify-between p-4 border-b border-blue-700">
           <div className="flex items-center space-x-2">
-            <Car className="h-6 w-6" />
-            <span className="text-xl font-semibold">CarRental ERP</span>
+            <Car className="h-6 w-6 text-white" />
+            <span className="text-xl font-semibold text-white">CarRental ERP</span>
           </div>
           <Button 
             variant="ghost" 
             size="icon" 
             onClick={() => setIsMobileOpen(false)}
-            className="lg:hidden text-white hover:bg-primary-700"
+            className="lg:hidden text-white hover:bg-blue-700"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -89,23 +89,22 @@ export function Sidebar({ isMobileOpen, setIsMobileOpen }: {
         
         <nav className="py-4 overflow-y-auto scrollbar-hide h-[calc(100vh-64px)]">
           {menuItems.map((item, index) => (
-            <Link
+            <div
               key={index}
-              href={item.href}
-              onClick={() => setIsMobileOpen(false)}
+              onClick={() => {
+                setIsMobileOpen(false);
+                window.location.href = item.href;
+              }}
+              className={cn(
+                "flex items-center px-4 py-3 text-sm transition-colors duration-200 cursor-pointer",
+                location === item.href
+                  ? "bg-blue-700 text-white"
+                  : "hover:bg-blue-700 text-white"
+              )}
             >
-              <a
-                className={cn(
-                  "flex items-center px-4 py-3 text-sm transition-colors duration-200",
-                  location === item.href
-                    ? "bg-primary-700"
-                    : "hover:bg-primary-700"
-                )}
-              >
-                {item.icon}
-                <span className="ml-3">{item.label}</span>
-              </a>
-            </Link>
+              <span className="text-white">{item.icon}</span>
+              <span className="ml-3 text-white">{item.label}</span>
+            </div>
           ))}
         </nav>
       </div>
