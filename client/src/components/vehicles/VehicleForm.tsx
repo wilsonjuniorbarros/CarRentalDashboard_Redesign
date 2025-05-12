@@ -138,6 +138,7 @@ export function VehicleForm({ onCancel }: VehicleFormProps) {
                       <SelectItem value="suv">SUV</SelectItem>
                       <SelectItem value="hatch">Hatch</SelectItem>
                       <SelectItem value="pickup">Pickup</SelectItem>
+                      <SelectItem value="other">Outro</SelectItem>
                     </SelectContent>
                   </Select>
                 </FormItem>

@@ -131,11 +131,15 @@ export function ContractForm({ onCancel }: ContractFormProps) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {rentalPlans.map(plan => (
-                        <SelectItem key={plan.id} value={plan.id.toString()}>
-                          {plan.name} - R${plan.price.toFixed(2)}/{plan.type === 'daily' ? 'dia' : plan.type === 'weekly' ? 'semana' : 'mês'}
-                        </SelectItem>
-                      ))}
+                      {rentalPlans.length > 0 ? (
+                        rentalPlans.map(plan => (
+                          <SelectItem key={plan.id} value={plan.id.toString()}>
+                            {plan.name} - R${plan.price.toFixed(2)}/{plan.type === 'daily' ? 'dia' : plan.type === 'weekly' ? 'semana' : 'mês'}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem value="no-plans">Nenhum plano disponível</SelectItem>
+                      )}
                     </SelectContent>
                   </Select>
                 </FormItem>

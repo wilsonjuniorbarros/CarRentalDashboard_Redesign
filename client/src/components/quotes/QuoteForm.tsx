@@ -67,11 +67,15 @@ export function QuoteForm({ onCancel }: QuoteFormProps) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {clients.map(client => (
-                        <SelectItem key={client.id} value={client.id.toString()}>
-                          {client.name}
-                        </SelectItem>
-                      ))}
+                      {clients.length > 0 ? (
+                        clients.map(client => (
+                          <SelectItem key={client.id} value={client.id.toString()}>
+                            {client.name}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem value="no-clients">Nenhum cliente disponível</SelectItem>
+                      )}
                     </SelectContent>
                   </Select>
                 </FormItem>
@@ -94,14 +98,17 @@ export function QuoteForm({ onCancel }: QuoteFormProps) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {vehicles
-                        .filter(vehicle => vehicle.status === 'available')
-                        .map(vehicle => (
-                          <SelectItem key={vehicle.id} value={vehicle.id.toString()}>
-                            {vehicle.model} - {vehicle.plate}
-                          </SelectItem>
-                        ))
-                      }
+                      {vehicles.filter(vehicle => vehicle.status === 'available').length > 0 ? (
+                        vehicles
+                          .filter(vehicle => vehicle.status === 'available')
+                          .map(vehicle => (
+                            <SelectItem key={vehicle.id} value={vehicle.id.toString()}>
+                              {vehicle.model} - {vehicle.plate}
+                            </SelectItem>
+                          ))
+                      ) : (
+                        <SelectItem value="no-vehicles">Nenhum veículo disponível</SelectItem>
+                      )}
                     </SelectContent>
                   </Select>
                 </FormItem>
@@ -124,11 +131,15 @@ export function QuoteForm({ onCancel }: QuoteFormProps) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {rentalPlans.map(plan => (
-                        <SelectItem key={plan.id} value={plan.id.toString()}>
-                          {plan.name} - R${plan.price.toFixed(2)}/{plan.type === 'daily' ? 'dia' : plan.type === 'weekly' ? 'semana' : 'mês'}
-                        </SelectItem>
-                      ))}
+                      {rentalPlans.length > 0 ? (
+                        rentalPlans.map(plan => (
+                          <SelectItem key={plan.id} value={plan.id.toString()}>
+                            {plan.name} - R${plan.price.toFixed(2)}/{plan.type === 'daily' ? 'dia' : plan.type === 'weekly' ? 'semana' : 'mês'}
+                          </SelectItem>
+                        ))
+                      ) : (
+                        <SelectItem value="no-plans">Nenhum plano disponível</SelectItem>
+                      )}
                     </SelectContent>
                   </Select>
                 </FormItem>
