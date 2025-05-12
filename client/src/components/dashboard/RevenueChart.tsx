@@ -1,13 +1,13 @@
-import { Card, CardContent } from "@/components/ui/card";
 import { 
-  BarChart, 
-  Bar, 
+  AreaChart,
+  Area,
   XAxis, 
   YAxis, 
   CartesianGrid, 
   Tooltip, 
   Legend, 
-  ResponsiveContainer 
+  ResponsiveContainer,
+  ReferenceLine
 } from "recharts";
 import { financialData } from "@/lib/data";
 
@@ -28,8 +28,9 @@ export function RevenueChart() {
       return (
         <div className="bg-white p-3 shadow-md rounded border border-gray-100">
           <p className="font-medium">{label}</p>
-          <p className="text-primary">Receita: {formatCurrency(payload[0].value)}</p>
-          <p className="text-red-500">Despesas: {formatCurrency(payload[1].value)}</p>
+          <p className="text-blue-500 font-medium">{`Receita: ${formatCurrency(payload[0].value)}`}</p>
+          <p className="text-rose-500 font-medium">{`Despesas: ${formatCurrency(payload[1].value)}`}</p>
+          <p className="text-emerald-500 font-medium">{`Lucro: ${formatCurrency(payload[0].value - payload[1].value)}`}</p>
         </div>
       );
     }
@@ -38,55 +39,65 @@ export function RevenueChart() {
   };
 
   return (
-    <Card className="h-full">
-      <CardContent className="p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h3 className="text-lg font-medium text-gray-800">Receita vs Despesas (Últimos 6 meses)</h3>
-        </div>
-        <div className="h-64">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={data}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-              barGap={0}
-              barCategoryGap={20}
-            >
-              <CartesianGrid strokeDasharray="3 3" vertical={false} />
-              <XAxis 
-                dataKey="month" 
-                axisLine={false} 
-                tickLine={false} 
-                fontSize={12}
-              />
-              <YAxis 
-                axisLine={false} 
-                tickLine={false} 
-                fontSize={12}
-                tickFormatter={(value) => `R$${value / 1000}k`}
-              />
-              <Tooltip content={<CustomTooltip />} />
-              <Legend />
-              <Bar 
-                name="Receita" 
-                dataKey="revenue" 
-                fill="hsl(var(--primary))" 
-                radius={[4, 4, 0, 0]} 
-              />
-              <Bar 
-                name="Despesas" 
-                dataKey="expenses" 
-                fill="hsl(var(--destructive))" 
-                radius={[4, 4, 0, 0]} 
-              />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </CardContent>
-    </Card>
+    <div className="h-[300px]">
+      <ResponsiveContainer width="100%" height="100%">
+        <AreaChart
+          data={data}
+          margin={{
+            top: 10,
+            right: 10,
+            left: 0,
+            bottom: 0,
+          }}
+        >
+          <defs>
+            <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.8}/>
+              <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.1}/>
+            </linearGradient>
+            <linearGradient id="colorExpenses" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#ef4444" stopOpacity={0.8}/>
+              <stop offset="95%" stopColor="#ef4444" stopOpacity={0.1}/>
+            </linearGradient>
+          </defs>
+          <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
+          <XAxis 
+            dataKey="month" 
+            axisLine={false} 
+            tickLine={false} 
+            fontSize={12}
+            stroke="#999"
+          />
+          <YAxis 
+            axisLine={false} 
+            tickLine={false} 
+            fontSize={12}
+            tickFormatter={(value) => `R$${value / 1000}k`}
+            stroke="#999"
+          />
+          <Tooltip content={<CustomTooltip />} />
+          <Legend wrapperStyle={{ paddingTop: "10px" }} />
+          <ReferenceLine y={0} stroke="#000" />
+          <Area 
+            type="monotone" 
+            name="Receita" 
+            dataKey="revenue" 
+            stroke="#3b82f6" 
+            fillOpacity={1}
+            fill="url(#colorRevenue)"
+            activeDot={{ r: 6 }}
+          />
+          <Area 
+            type="monotone" 
+            name="Despesas" 
+            dataKey="expenses" 
+            stroke="#ef4444" 
+            fillOpacity={1}
+            fill="url(#colorExpenses)"
+            activeDot={{ r: 6 }}
+          />
+        </AreaChart>
+      </ResponsiveContainer>
+    </div>
   );
 }

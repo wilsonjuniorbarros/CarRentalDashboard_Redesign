@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { 
   Card, 
   CardContent,
@@ -24,11 +25,17 @@ import {
   CartesianGrid,
   Tooltip,
   Legend,
-  ResponsiveContainer
+  ResponsiveContainer,
+  AreaChart,
+  Area
 } from "recharts";
 import { financialData } from "@/lib/data";
+import { FinancialTransactionForm } from "./FinancialTransactionForm";
 
 export function FinancialPage() {
+  const [showIncomeForm, setShowIncomeForm] = useState(false);
+  const [showExpenseForm, setShowExpenseForm] = useState(false);
+
   // Format currency
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('pt-BR', { 
@@ -47,13 +54,18 @@ export function FinancialPage() {
       return (
         <div className="bg-white p-3 shadow-md rounded border border-gray-100">
           <p className="font-medium">{label}</p>
-          <p className="text-primary">Receita: {formatCurrency(payload[0].value)}</p>
+          <p className="text-blue-500">Receita: {formatCurrency(payload[0].value)}</p>
           <p className="text-red-500">Despesas: {formatCurrency(payload[1].value)}</p>
         </div>
       );
     }
   
     return null;
+  };
+
+  const handleTransactionSubmit = (data: any) => {
+    console.log('Nova transação:', data);
+    // Aqui normalmente enviaríamos os dados para o servidor
   };
 
   return (
@@ -64,12 +76,14 @@ export function FinancialPage() {
           <Button
             variant="outline"
             className="flex items-center"
+            onClick={() => setShowExpenseForm(true)}
           >
             <ArrowDownRight className="h-4 w-4 mr-2" />
             Registrar Despesa
           </Button>
           <Button
             className="flex items-center"
+            onClick={() => setShowIncomeForm(true)}
           >
             <ArrowUpRight className="h-4 w-4 mr-2" />
             Registrar Receita
@@ -77,11 +91,26 @@ export function FinancialPage() {
         </div>
       </div>
 
+      {/* Formulários de transação */}
+      <FinancialTransactionForm 
+        type="income" 
+        open={showIncomeForm} 
+        onClose={() => setShowIncomeForm(false)} 
+        onSubmit={handleTransactionSubmit}
+      />
+      
+      <FinancialTransactionForm 
+        type="expense" 
+        open={showExpenseForm} 
+        onClose={() => setShowExpenseForm(false)} 
+        onSubmit={handleTransactionSubmit}
+      />
+
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
+        <Card className="bg-gradient-to-br from-blue-50 to-white border-blue-100">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-gray-700 mb-2">Receita deste mês</h3>
+            <h3 className="text-sm font-medium text-blue-700 mb-2">Receita deste mês</h3>
             <p className="text-2xl font-semibold text-gray-800">
               {formatCurrency(financialData.monthlyRevenue)}
             </p>
@@ -92,9 +121,9 @@ export function FinancialPage() {
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="bg-gradient-to-br from-red-50 to-white border-red-100">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-gray-700 mb-2">Despesas deste mês</h3>
+            <h3 className="text-sm font-medium text-red-700 mb-2">Despesas deste mês</h3>
             <p className="text-2xl font-semibold text-gray-800">
               {formatCurrency(financialData.monthlyExpenses)}
             </p>
@@ -105,9 +134,9 @@ export function FinancialPage() {
           </CardContent>
         </Card>
         
-        <Card>
+        <Card className="bg-gradient-to-br from-green-50 to-white border-green-100">
           <CardContent className="p-6">
-            <h3 className="text-sm font-medium text-gray-700 mb-2">Saldo líquido</h3>
+            <h3 className="text-sm font-medium text-green-700 mb-2">Saldo líquido</h3>
             <p className="text-2xl font-semibold text-gray-800">
               {formatCurrency(financialData.netBalance)}
             </p>
@@ -120,10 +149,10 @@ export function FinancialPage() {
       </div>
 
       {/* Financial Chart */}
-      <Card>
+      <Card className="border border-gray-200 shadow-sm">
         <CardHeader className="pb-2">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-lg font-medium">Evolução Financeira</CardTitle>
+            <CardTitle className="text-lg font-medium text-gray-800">Evolução Financeira</CardTitle>
             <div className="flex space-x-2">
               <Button variant="outline" size="sm" className="h-8">
                 <BarChart className="h-4 w-4 mr-2" />
@@ -139,7 +168,7 @@ export function FinancialPage() {
         <CardContent className="pt-0 pb-6">
           <div className="h-80">
             <ResponsiveContainer width="100%" height="100%">
-              <RechartsBarChart
+              <AreaChart
                 data={financialData.revenueByMonth}
                 margin={{
                   top: 20,
@@ -147,37 +176,41 @@ export function FinancialPage() {
                   left: 20,
                   bottom: 5,
                 }}
-                barGap={0}
-                barCategoryGap={20}
               >
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
                 <XAxis 
                   dataKey="month" 
                   axisLine={false} 
                   tickLine={false} 
                   fontSize={12}
+                  stroke="#999"
                 />
                 <YAxis 
                   axisLine={false} 
                   tickLine={false} 
                   fontSize={12}
                   tickFormatter={(value) => `R$${value / 1000}k`}
+                  stroke="#999"
                 />
                 <Tooltip content={<CustomTooltip />} />
                 <Legend />
-                <Bar 
+                <Area 
+                  type="monotone"
                   name="Receita" 
                   dataKey="revenue" 
-                  fill="hsl(var(--primary))" 
-                  radius={[4, 4, 0, 0]} 
+                  fill="rgba(59, 130, 246, 0.2)" 
+                  stroke="#3b82f6"
+                  activeDot={{ r: 6 }}
                 />
-                <Bar 
+                <Area 
+                  type="monotone"
                   name="Despesas" 
                   dataKey="expenses" 
-                  fill="hsl(var(--destructive))" 
-                  radius={[4, 4, 0, 0]} 
+                  fill="rgba(239, 68, 68, 0.2)" 
+                  stroke="#ef4444"
+                  activeDot={{ r: 6 }}
                 />
-              </RechartsBarChart>
+              </AreaChart>
             </ResponsiveContainer>
           </div>
         </CardContent>
@@ -197,7 +230,7 @@ export function FinancialPage() {
           </div>
           
           <TabsContent value="income">
-            <Card>
+            <Card className="shadow-sm border-blue-100">
               <CardContent className="p-0">
                 <Table>
                   <TableHeader>
@@ -211,10 +244,10 @@ export function FinancialPage() {
                   </TableHeader>
                   <TableBody>
                     {financialData.incomes.map((income) => (
-                      <TableRow key={income.id}>
+                      <TableRow key={income.id} className="hover:bg-blue-50">
                         <TableCell>{formatDate(income.date)}</TableCell>
                         <TableCell>{income.description}</TableCell>
-                        <TableCell>{formatCurrency(income.value)}</TableCell>
+                        <TableCell className="font-medium text-blue-700">{formatCurrency(income.value)}</TableCell>
                         <TableCell>
                           {income.status === 'paid' ? (
                             <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Pago</Badge>
@@ -234,7 +267,7 @@ export function FinancialPage() {
           </TabsContent>
           
           <TabsContent value="expenses">
-            <Card>
+            <Card className="shadow-sm border-red-100">
               <CardContent className="p-0">
                 <Table>
                   <TableHeader>
@@ -248,7 +281,7 @@ export function FinancialPage() {
                   </TableHeader>
                   <TableBody>
                     {financialData.expenses.map((expense) => (
-                      <TableRow key={expense.id}>
+                      <TableRow key={expense.id} className="hover:bg-red-50">
                         <TableCell>{formatDate(expense.date)}</TableCell>
                         <TableCell>{expense.description}</TableCell>
                         <TableCell>
@@ -256,7 +289,7 @@ export function FinancialPage() {
                             {expense.category}
                           </Badge>
                         </TableCell>
-                        <TableCell>{formatCurrency(expense.value)}</TableCell>
+                        <TableCell className="font-medium text-red-700">{formatCurrency(expense.value)}</TableCell>
                         <TableCell className="text-right">
                           <Button variant="ghost" size="sm">Detalhes</Button>
                         </TableCell>
