@@ -1,0 +1,195 @@
+Project:
+Build a fully static web UI for an ERP system for a car rental company.
+
+Goal:
+Generate all screens with realistic dummy data and pre-filled forms. This is only a front-end, with no backend or logic, just static pages representing what a real ERP would look like in production. The UI must be organized, responsive and simulate the behavior and structure of a real SaaS dashboard.
+
+⸻
+
+💼 Sections & Pages to Generate (12 total):
+
+⸻
+
+1. Dashboard
+	•	Show summary boxes with:
+	•	Available Vehicles: 12
+	•	Rented Vehicles: 8
+	•	Monthly Revenue: R$42,300.00
+	•	Active Contracts: 6
+	•	Include:
+	•	Bar chart: Revenue vs Expenses (last 6 months)
+	•	Pie chart: Contracts by status (Active, Finalized, Cancelled)
+	•	Shortcuts: “New Contract”, “New Client”, “New Quote”
+
+⸻
+
+2. Vehicles
+	•	Table of 10 sample vehicles, with filters (category, plate, status)
+	•	Example row:
+	•	Model: Corolla 2020
+	•	Plate: ABC1D23
+	•	Category: Sedan
+	•	Mileage: 32,500 km
+	•	Status: Available / Rented / Under Maintenance
+	•	Form (Add/Edit):
+	•	Brand
+	•	Model
+	•	Year
+	•	Plate
+	•	Mileage
+	•	Category
+	•	Purchase Value
+	•	Purchase Date
+	•	Upload multiple photos
+
+⸻
+
+3. Clients
+	•	Table of 10 pre-filled clients:
+	•	Name: João da Silva
+	•	CPF: 123.456.789-00
+	•	Phone: (11) 91234-5678
+	•	Email: joao@email.com
+	•	CNH (Driver’s License): 90812345678 – Valid until: 20/11/2025
+	•	Buttons: View History | Edit
+	•	Form (Add/Edit):
+	•	Name, CPF, Phone, Email, Address, CNH, Expiration Date
+
+⸻
+
+4. Rental Plans
+	•	Three sample plans:
+	•	Daily Basic: R$120/day – 200 km included
+	•	Monthly Executive: R$2,400/month – 4,000 km included
+	•	Weekly Economy: R$600/week – 1,000 km included
+	•	Form:
+	•	Name
+	•	Description
+	•	Type (Daily, Weekly, Monthly)
+	•	Price
+	•	Included Kilometers
+	•	Extra KM Fee
+	•	Security Deposit
+
+⸻
+
+5. Contracts
+	•	Table with 5 simulated contracts:
+	•	Client: João da Silva
+	•	Vehicle: Corolla 2020
+	•	Dates: 01/05/2025 – 07/05/2025
+	•	Total: R$840.00
+	•	Status: Active
+	•	Form:
+	•	Select Client, Vehicle, Rental Plan
+	•	Start/End Date
+	•	Notes
+	•	Generate PDF / Print buttons
+
+⸻
+
+6. Quotes
+	•	List of 4 sample quotes:
+	•	Client: Maria Lopes
+	•	Vehicle: HB20 2022
+	•	Plan: Daily Basic
+	•	Total Estimate: R$240.00
+	•	Status: Sent
+	•	Button: Convert to Contract
+	•	Form with same fields as contract, but read-only
+
+⸻
+
+7. Checklist – Vehicle Delivery & Return
+	•	Sample Delivery Checklist:
+	•	Fuel: Full
+	•	Odometer: 42,130 km
+	•	Tires: OK
+	•	Damages: None
+	•	Required Items: All present
+	•	Comments: “Clean vehicle, no issues.”
+	•	Client Signature: João da Silva
+	•	Sample Return Checklist:
+	•	Fuel: ¾
+	•	Odometer: 42,890 km
+	•	New Damages: Scratch on rear bumper
+	•	Notes: “Charge for repainting.”
+
+⸻
+
+8. Maintenance & Suppliers
+	•	Panel with upcoming maintenance:
+	•	HB20 2022 – Last maintenance 9,500 km ago – Next in 500 km
+	•	Strada 2020 – Maintenance due by 12/05/2025
+	•	Supplier list:
+	•	Oficina Lopes – Electrical – São Paulo – (11) 99999-0000
+	•	Auto Roda Livre – Mechanical – Fortaleza
+	•	Example Work Order:
+	•	Vehicle: Strada 2020
+	•	Type: Preventive
+	•	Supplier: Oficina Lopes
+	•	Schedule: 14/05/2025
+	•	Estimated Cost: R$450.00
+	•	Status: Scheduled
+	•	Form for new maintenance:
+	•	Vehicle
+	•	Date
+	•	Type (Preventive/Corrective)
+	•	Mileage
+	•	Description
+	•	Supplier
+	•	Upload Invoice
+
+⸻
+
+9. Financial Panel
+	•	Revenue Summary:
+	•	Revenue this month: R$42,300.00
+	•	Expenses this month: R$15,400.00
+	•	Net Balance: R$26,900.00
+	•	Income List:
+	•	Contract #009 – João da Silva – R$840.00 – Paid
+	•	Expenses List:
+	•	Maintenance – Corolla – R$620.00
+	•	Employee Salary – R$2,000.00
+
+⸻
+
+10. Employees
+	•	Table of 3 employees:
+	•	Carla Menezes – Role: Customer Support – Status: Active
+	•	Rafael Souza – Role: Finance – Status: Active
+	•	Form:
+	•	Name
+	•	CPF
+	•	Role
+	•	Email
+	•	Phone
+	•	Status (Active/Inactive)
+
+⸻
+
+11. System Subscription Plan
+	•	Current subscription details (SaaS simulation):
+	•	Plan: Professional
+	•	Max Vehicles: 50
+	•	Max Users: 5
+	•	Price: R$199.90/month
+	•	Expiration: 10/05/2025
+	•	Status: Active
+
+⸻
+
+12. Navigation
+	•	Include a vertical sidebar menu with all sections.
+	•	Top header with company name and user profile dropdown.
+	•	Pages must be consistent and visually professional.
+	•	Use real layout spacing, headers, inputs, tables, and placeholder buttons.
+
+⸻
+
+Constraints:
+	•	This is purely static.
+	•	Do not include any API, backend, or frameworks.
+	•	All content should be mocked with realistic data.
+	•	All buttons, dropdowns, tables, charts, and inputs should appear as if functional, but are not.
