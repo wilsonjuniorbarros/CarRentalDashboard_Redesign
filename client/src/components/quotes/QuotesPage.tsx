@@ -215,7 +215,7 @@ export function QuotesPage() {
                           size="icon" 
                           className="text-primary hover:text-primary-600"
                           onClick={() => {
-                            setSelectedQuote(quote);
+                            setSelectedQuote(quote as Quote);
                             setCurrentTab('edit');
                           }}
                         >

@@ -7,6 +7,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { clients, vehicles, rentalPlans } from "@/lib/data";
+import { Quote } from "@/types";
 import { SendHorizontal } from "lucide-react";
 
 // Validation schema
@@ -23,19 +24,29 @@ type QuoteFormValues = z.infer<typeof quoteFormSchema>;
 
 interface QuoteFormProps {
   onCancel: () => void;
+  editQuote?: Quote | null;
 }
 
-export function QuoteForm({ onCancel }: QuoteFormProps) {
+export function QuoteForm({ onCancel, editQuote }: QuoteFormProps) {
   const form = useForm<QuoteFormValues>({
     resolver: zodResolver(quoteFormSchema),
-    defaultValues: {
-      clientId: "",
-      vehicleId: "",
-      planId: "",
-      startDate: "",
-      endDate: "",
-      notes: ""
-    }
+    defaultValues: editQuote
+      ? {
+          clientId: editQuote.clientId.toString(),
+          vehicleId: editQuote.vehicleId.toString(),
+          planId: editQuote.planId.toString(),
+          startDate: editQuote.startDate,
+          endDate: editQuote.endDate,
+          notes: ""
+        }
+      : {
+          clientId: "",
+          vehicleId: "",
+          planId: "",
+          startDate: "",
+          endDate: "",
+          notes: ""
+        }
   });
   
   function onSubmit(data: QuoteFormValues) {
@@ -46,7 +57,9 @@ export function QuoteForm({ onCancel }: QuoteFormProps) {
 
   return (
     <div>
-      <h3 className="text-lg font-medium text-gray-800 mb-4">Nova Cotação</h3>
+      <h3 className="text-lg font-medium text-gray-800 mb-4">
+        {editQuote ? `Editar Cotação` : "Nova Cotação"}
+      </h3>
       
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -203,7 +216,9 @@ export function QuoteForm({ onCancel }: QuoteFormProps) {
               <SendHorizontal className="h-4 w-4 mr-2" />
               Enviar
             </Button>
-            <Button type="submit">Salvar Cotação</Button>
+            <Button type="submit">
+              {editQuote ? "Atualizar Cotação" : "Salvar Cotação"}
+            </Button>
           </div>
         </form>
       </Form>
