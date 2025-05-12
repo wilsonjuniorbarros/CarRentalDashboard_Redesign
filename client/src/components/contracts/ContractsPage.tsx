@@ -20,15 +20,15 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { ContractForm } from "./ContractForm";
 import { contracts } from "@/lib/data";
-import { FileText, Printer, XCircle, Plus } from "lucide-react";
+import { FileText, Printer, XCircle, Plus, Check, BarChart3, Calendar } from "lucide-react";
 
 export function ContractsPage() {
   const [currentTab, setCurrentTab] = useState<'view' | 'create'>('view');
-  const [statusFilter, setStatusFilter] = useState<string>("");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
   const [clientFilter, setClientFilter] = useState<string>("");
 
   const filteredContracts = contracts.filter(contract => {
-    const matchStatus = !statusFilter || contract.status === statusFilter;
+    const matchStatus = statusFilter === "all" || contract.status === statusFilter;
     const matchClient = !clientFilter || 
       contract.clientName.toLowerCase().includes(clientFilter.toLowerCase());
     return matchStatus && matchClient;
@@ -58,6 +58,11 @@ export function ContractsPage() {
     }
   };
 
+  // Count contracts by status
+  const activeContracts = contracts.filter(c => c.status === 'active').length;
+  const finalizedContracts = contracts.filter(c => c.status === 'finalized').length;
+  const cancelledContracts = contracts.filter(c => c.status === 'cancelled').length;
+  
   return (
     <Card>
       <CardHeader className="px-6 py-4 border-b border-gray-200">
@@ -107,7 +112,7 @@ export function ContractsPage() {
                     <SelectValue placeholder="Todos" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="">Todos</SelectItem>
+                    <SelectItem value="all">Todos</SelectItem>
                     <SelectItem value="active">Ativos</SelectItem>
                     <SelectItem value="finalized">Finalizados</SelectItem>
                     <SelectItem value="cancelled">Cancelados</SelectItem>
@@ -129,7 +134,7 @@ export function ContractsPage() {
                   variant="outline" 
                   className="w-full"
                   onClick={() => {
-                    setStatusFilter("");
+                    setStatusFilter("all");
                     setClientFilter("");
                   }}
                 >
